@@ -1,5 +1,6 @@
-import React from "react";
-import styled from "styled-components";
+import React, { memo } from "react";
+
+import { cellWidth, cellHeight } from "../../constants";
 
 export const overlayTypes = {
   Allowed: "ALLOWED",
@@ -13,16 +14,25 @@ const getBackgroundType = (type) => {
     case overlayTypes.Denied:
       return "#ff4444";
     default:
-      return "white";
+      return "#fff";
   }
 };
 
-const SOverlay = styled.div`
-  background-color: ${(props) => getBackgroundType(props.type)};
-  width: 100%;
-  height: 100%;
-`;
+const _Overlay = ({ type, size, row, col }) => {
+  const width = cellWidth * size[1];
+  const height = cellHeight * size[0];
 
-export const Overlay = ({ type }) => {
-  return <SOverlay type={type} />;
+  const style = {
+    backgroundColor: getBackgroundType(type),
+    width,
+    height,
+    position: "absolute",
+    top: row * cellHeight,
+    left: col * cellWidth,
+    zIndex: -1,
+  };
+
+  return <div type={type} style={style} />;
 };
+
+export const Overlay = memo(_Overlay);

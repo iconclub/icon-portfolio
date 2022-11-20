@@ -1,59 +1,64 @@
 import React from "react";
-import styled from "styled-components";
 import { useDrag } from "react-dnd";
+import { v4 as uuidv4 } from "uuid";
 
 import { ItemTypes } from "../../drag-types";
 import { cellWidth, cellHeight } from "../../constants";
 import { useMainContext } from "../../contexts/MainContext";
 
-const SCard = styled.div`
-  width: ${(props) => props.size[0] * cellWidth}px;
-  height: ${(props) => props.size[1] * cellHeight}px;
-  background-color: red;
-  cursor: grab;
-  margin: 16px 0px;
-`;
+export const Card = ({ id, name, size, customStyle }) => {
+  const { setItems, selectedItem, setSelectedItem } = useMainContext();
 
-export const Card = ({ name, size }) => {
-  const { setItems, setSelectedItem } = useMainContext();
+  const style = {
+    width: cellWidth * size[1],
+    height: cellHeight * size[0],
+    backgroundColor: "red",
+    cursor: "grab",
+    margin: "16px 0px",
+  };
 
   const [{ opacity }, dragRef] = useDrag(
     () => ({
       type: ItemTypes.Card,
-      item: { name, size },
+      item: { id, name, size },
       end: (item, monitor) => {
         const dropResult = monitor.getDropResult();
-        if (item && dropResult) {
-          setItems((prevItems) => [
-            ...prevItems,
-            {
-              name,
-              size,
-              coordinates: [dropResult.row, dropResult.col],
-            },
-          ]);
+        if (dropResult) {
+          const isFromSidebar = id.includes("sidebar");
+          const newItem = {
+            cood: [dropResult.row, dropResult.col],
+            id: isFromSidebar ? uuidv4() : id,
+            name,
+            size,
+          };
+          if (!isFromSidebar) {
+            setItems((prevItems) => prevItems.filter((ele) => ele.id !== id));
+          }
+          setItems((prevItems) => [...prevItems, newItem]);
         }
+        setSelectedItem(null);
       },
       collect: (monitor) => ({
         opacity: monitor.isDragging() ? 0.8 : 1,
       }),
     }),
-    []
+    [id, name, size]
   );
 
   const handleMouseDown = () => {
-    setSelectedItem({ name, size });
+    setSelectedItem({ id, name, size });
   };
 
   const handleMouseUp = () => {
     setSelectedItem(null);
   };
 
+  const zIndex = selectedItem && selectedItem.id === id ? 3 : 1;
+
   return (
-    <SCard
+    <div
       ref={dragRef}
-      size={size}
-      style={{ opacity }}
+      style={{ ...style, ...customStyle, opacity, zIndex }}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
     />

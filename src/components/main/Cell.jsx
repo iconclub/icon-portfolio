@@ -1,58 +1,51 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { memo } from "react";
 import { useDrop } from "react-dnd";
 
+import { cellHeight, cellWidth, numberOfColumns, numberOfRows } from "../../constants";
 import { ItemTypes } from "../../drag-types";
-import { Overlay, overlayTypes } from "./Overlay";
 import { useMainContext } from "../../contexts/MainContext";
-import { useMemo } from "react";
+import { Overlay, overlayTypes } from "./Overlay";
 
-const SCell = styled.div`
-  width: ${(props) => props.width}px;
-  height: ${(props) => props.height}px;
-  background: transparent;
-  border: 1px dotted #ccc;
-`;
+const _Cell = ({ row, col }) => {
+  const { selectedItem } = useMainContext();
 
-const isNearbyCell = (hoveredCell, row, col, selectedItem) => {
-  if (!hoveredCell || !selectedItem) {
-    return false;
+  const style = {
+    width: cellWidth,
+    height: cellHeight,
+    border: "1px dotted #ccc",
+    zIndex: selectedItem ? 2 : -1,
+  };
+
+  let isItemOutOfBound = false;
+  if (selectedItem) {
+    const isOutOfRow = row + selectedItem.size[0] > numberOfRows;
+    const isOutOfCol = col + selectedItem.size[1] > numberOfColumns;
+    isItemOutOfBound = isOutOfRow || isOutOfCol;
   }
-  if (hoveredCell[0] === row && hoveredCell[1] === col) {
-    return false;
-  }
-  const isNearbyRow = hoveredCell[0] + selectedItem.size[0] >= row;
-  const isNearbyCol = hoveredCell[1] + selectedItem.size[1] >= col;
-  return isNearbyRow && isNearbyCol;
-};
-
-export const Cell = ({ row, col, width, height }) => {
-  const { selectedItem, hoveredCell, setHoveredCell } = useMainContext();
 
   const [{ canDrop, isOver }, drop] = useDrop(
     () => ({
       accept: [ItemTypes.Card],
-      drop: () => ({ name: `Cell(${row},${col})`, row, col }),
+      drop: () => ({ name: `cell(${row},${col})`, row, col }),
+      canDrop: () => !isItemOutOfBound,
       collect: (monitor) => ({
         isOver: monitor.isOver(),
         canDrop: monitor.canDrop(),
       }),
     }),
-    [row, col]
+    [row, col, isItemOutOfBound]
   );
-
-  // if (canDrop && isOver) {
-  //   setHoveredCell([row, col]);
-  // }
-  // const isNearby = useMemo(
-  //   () => isNearbyCell(hoveredCell, row, col, selectedItem),
-  //   [col, hoveredCell, row, selectedItem]
-  // );
 
   return (
-    <SCell ref={drop} width={width} height={height} id={`Cell(${row},${col})`}>
-      {canDrop && isOver && <Overlay type={overlayTypes.Allowed} />}
-      {/* {isNearby && <Overlay type={overlayTypes.Allowed} />} */}
-    </SCell>
+    <div ref={drop} id={`cell(${row},${col})`} style={style}>
+      {canDrop && isOver && (
+        <Overlay type={overlayTypes.Allowed} size={selectedItem.size} row={row} col={col} />
+      )}
+      {!canDrop && isOver && (
+        <Overlay type={overlayTypes.Denied} size={selectedItem.size} row={row} col={col} />
+      )}
+    </div>
   );
 };
+
+export const Cell = memo(_Cell);
