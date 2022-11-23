@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 
-import { cellWidth, cellHeight } from "../../constants";
+import { CELL_WIDTH, CELL_HEIGHT } from "../../constants";
 
 export const overlayTypes = {
   Allowed: "ALLOWED",
@@ -14,21 +14,21 @@ const getBackgroundType = (type) => {
     case overlayTypes.Denied:
       return "#ff4444";
     default:
-      return "#fff";
+      return "transparent";
   }
 };
 
 const _Overlay = ({ type, size, row, col }) => {
-  const width = cellWidth * size[1];
-  const height = cellHeight * size[0];
+  const width = CELL_WIDTH * size[1];
+  const height = CELL_HEIGHT * size[0];
 
   const style = {
     backgroundColor: getBackgroundType(type),
     width,
     height,
     position: "absolute",
-    top: row * cellHeight,
-    left: col * cellWidth,
+    top: row * CELL_HEIGHT,
+    left: col * CELL_WIDTH,
     zIndex: -1,
   };
 

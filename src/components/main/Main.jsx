@@ -1,48 +1,10 @@
 import React, { useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { numberOfRows, numberOfColumns, cellWidth, cellHeight } from "../../constants";
+import { NUMBER_OF_ROWS, NUMBER_OF_COLUMNS, CELL_WIDTH, CELL_HEIGHT } from "../../constants";
 import { useMainContext } from "../../contexts/MainContext";
 import { Card } from "../sidebar/Card";
 import { Cell } from "./Cell";
-
-const getItemComponent = ({ cood, name, size, id }) => {
-  const customStyle = {
-    margin: 0,
-    position: "absolute",
-    top: cood[0] * cellHeight,
-    left: cood[1] * cellWidth,
-  };
-
-  const key = uuidv4();
-
-  switch (name) {
-    case "Input":
-      return (
-        <input
-          key={key}
-          id={id}
-          type="text"
-          style={{ width: cellWidth * size[1], height: cellHeight * size[0], ...customStyle }}
-        />
-      );
-    case "Textarea":
-      return (
-        <Card
-          key={key}
-          id={id}
-          size={size}
-          name={name}
-          customStyle={{
-            backgroundColor: "black",
-            ...customStyle,
-          }}
-        />
-      );
-    default:
-      return null;
-  }
-};
 
 export const Main = () => {
   const { items } = useMainContext();
@@ -53,8 +15,8 @@ export const Main = () => {
   };
 
   const cellsStyle = {
-    width: numberOfColumns * cellWidth,
-    height: numberOfRows * cellHeight,
+    width: NUMBER_OF_COLUMNS * CELL_WIDTH,
+    height: NUMBER_OF_ROWS * CELL_HEIGHT,
     display: "flex",
     flexWrap: "wrap",
     margin: "0px auto",
@@ -63,15 +25,25 @@ export const Main = () => {
 
   const cells = useMemo(() => {
     const _cells = [];
-    for (let row = 0; row < numberOfRows; row++) {
-      console.log("hi");
-      for (let col = 0; col < numberOfColumns; col++) {
+    for (let row = 0; row < NUMBER_OF_ROWS; row++) {
+      for (let col = 0; col < NUMBER_OF_COLUMNS; col++) {
         const idx = `cell(${row},${col})`;
         _cells.push(<Cell key={idx} row={row} col={col} />);
       }
     }
     for (const item of items) {
-      _cells.push(getItemComponent(item));
+      const { id, size, name, pos, data } = item;
+      _cells.push(
+        <Card
+          key={uuidv4()}
+          id={id}
+          size={size}
+          name={name}
+          row={pos[0]}
+          col={pos[1]}
+          prevData={data}
+        />
+      );
     }
     return _cells;
   }, [items]);
