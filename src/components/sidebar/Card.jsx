@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import { useDrag } from "react-dnd";
 import { v4 as uuidv4 } from "uuid";
 
-import { ItemTypes } from "../../constants";
+import { ItemTypes, DefaultItemData } from "../../constants";
 import { useMainContext } from "../../contexts/MainContext";
 import { usePropertyContext } from "../../contexts/PropertyContext";
 import { Block } from "../items/Block";
 import { Image } from "../items/Image";
 import { Input } from "../items/Input";
-import placeholderImg from "../../assets/placeholder.jpg";
 
 const getItemComponent = (name, size, row, col, cellWidth, cellHeight, data, setData) => {
   let customStyle = {};
@@ -23,20 +22,15 @@ const getItemComponent = (name, size, row, col, cellWidth, cellHeight, data, set
 
   switch (name) {
     case ItemTypes.Input: {
-      if (!data) setData({ text: "" });
-      const handleOnInput = (e) => {
-        setData({ text: e.target.value });
-      };
-      return (
-        <Input size={size} customStyle={customStyle} data={data} handleOnInput={handleOnInput} />
-      );
+      if (!data) setData(DefaultItemData.Input);
+      return <Input size={size} customStyle={customStyle} data={data} setData={setData} />;
     }
     case ItemTypes.Block: {
-      if (!data) setData({ backgroundColor: "#FAD964" });
+      if (!data) setData(DefaultItemData.Block);
       return <Block size={size} customStyle={customStyle} data={data} />;
     }
     case ItemTypes.Image: {
-      if (!data) setData({ src: placeholderImg });
+      if (!data) setData(DefaultItemData.Image);
       return <Image size={size} customStyle={customStyle} data={data} />;
     }
     default:

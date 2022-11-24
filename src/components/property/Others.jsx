@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 
 import { useMainContext } from "../../contexts/MainContext";
 import { usePropertyContext } from "../../contexts/PropertyContext";
@@ -26,10 +26,12 @@ export const Others = () => {
   };
 
   const handleOnInput = (e) => {
+    const property = e.target.name;
+    const value = e.target.value;
     const newData = {
-      [e.target.name]: [e.target.value],
+      [property]: isNaN(value) ? value : +value,
     };
-    setShowingItem((prev) => ({ ...prev, data: { ...newData } }));
+    setShowingItem((prev) => ({ ...prev, data: { ...prev.data, ...newData } }));
     setItems((prev) =>
       prev.map((ele) => {
         if (ele.id === showingItem.id) {
@@ -42,27 +44,24 @@ export const Others = () => {
 
   return (
     <>
-      {showingItem && (
-        <div style={style}>
-          {Object.entries(showingItem.data).map(([property, value]) => {
-            return (
-              <Fragment key={property}>
-                <label htmlFor={`others-${property}`} style={labelStyle}>
-                  {property.charAt(0).toUpperCase() + property.slice(1)}:
-                </label>
-                <input
-                  id={`others-${property}`}
-                  type="text"
-                  name={property}
-                  value={value}
-                  style={inputStyle}
-                  onInput={handleOnInput}
-                ></input>
-              </Fragment>
-            );
-          })}
-        </div>
-      )}
+      {showingItem &&
+        Object.entries(showingItem.data).map(([property, value]) => {
+          return (
+            <div key={property} style={style}>
+              <label htmlFor={`others-${property}`} style={labelStyle}>
+                {property.charAt(0).toUpperCase() + property.slice(1)}:
+              </label>
+              <input
+                id={`others-${property}`}
+                type="text"
+                name={property}
+                value={value}
+                style={inputStyle}
+                onInput={handleOnInput}
+              ></input>
+            </div>
+          );
+        })}
     </>
   );
 };
