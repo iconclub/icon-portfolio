@@ -27,7 +27,7 @@ const _Cell = ({ row, col }) => {
   const [{ canDrop, isOver }, drop] = useDrop(
     () => ({
       accept: [ItemTypes.Card],
-      drop: () => ({ name: `cell(${row},${col})`, row, col }),
+      drop: () => ({ name: `cell(${row},${col})`, row, col, isRemoved: false }),
       canDrop: () => !isItemOutOfBound,
       collect: (monitor) => ({
         isOver: monitor.isOver(),

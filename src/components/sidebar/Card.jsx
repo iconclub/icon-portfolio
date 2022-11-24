@@ -72,25 +72,30 @@ export const Card = ({ id, name, size, row, col, prevData }) => {
       item: { id },
       end: (item, monitor) => {
         const dropResult = monitor.getDropResult();
+
         if (dropResult) {
-          const pos = [dropResult.row, dropResult.col];
-          const processedId = isFromSidebar ? uuidv4() : id;
-          const newItem = {
-            id: processedId,
-            name,
-            size,
-            pos,
-            data,
-          };
+          if (dropResult.isRemoved) {
+            setItems((prev) => prev.filter((ele) => ele.id !== id));
+          } else {
+            const pos = [dropResult.row, dropResult.col];
+            const processedId = isFromSidebar ? uuidv4() : id;
+            const newItem = {
+              id: processedId,
+              name,
+              size,
+              pos,
+              data,
+            };
 
-          if (!isFromSidebar) {
-            setItems((prevItems) => prevItems.filter((ele) => ele.id !== id));
+            if (!isFromSidebar) {
+              setItems((prevItems) => prevItems.filter((ele) => ele.id !== id));
+            }
+
+            // Moving item instead of inserting
+            setItems((prevItems) => [...prevItems, newItem]);
+
+            setShowingItem({ id: processedId, name, size, pos, data });
           }
-
-          // Moving item instead of inserting
-          setItems((prevItems) => [...prevItems, newItem]);
-
-          setShowingItem({ id: processedId, name, size, pos, data });
         }
 
         setSelectedItem(null);
