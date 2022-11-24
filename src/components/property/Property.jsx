@@ -28,20 +28,21 @@ export const Property = () => {
 
   const style = {
     minWidth: 300,
+    minHeight: 220,
     backgroundColor: "#fff",
-    padding: "16px",
+    padding: "12px 16px",
     boxShadow: "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
     borderRadius: "4px",
     marginTop: 15,
+    overflow: "auto",
   };
 
   const headerStyle = {
     margin: 0,
-    textAlign: "center",
   };
 
   const titleStyle = {
-    margin: "0px 0px 20px 0px",
+    margin: "0px 0px 10px 0px",
   };
 
   const lastBlockStyle = {

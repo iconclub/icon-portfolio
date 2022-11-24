@@ -24,9 +24,12 @@ export const Sidebar = () => {
     <div style={style}>
       <h1 style={titleStyle}>Items</h1>
 
-      <Card name={ItemTypes.Block} size={[2, 8]} id="sidebar-block" />
+      <Card name={ItemTypes.Block} size={[2, 5]} id="sidebar-block" />
       <Card name={ItemTypes.Input} size={[1, 4]} id="sidebar-input" />
+      <Card name={ItemTypes.Text} size={[1, 4]} id="sidebar-text" />
+      <Card name={ItemTypes.Link} size={[1, 4]} id="sidebar-link" />
       <Card name={ItemTypes.Image} size={[2, 2]} id="sidebar-image" />
+      <Card name={ItemTypes.Divider} size={[0.1, 5]} id="sidebar-divider" />
     </div>
   );
 };

@@ -16,7 +16,6 @@ export const Others = () => {
 
   const labelStyle = {
     marginRight: 8,
-    fontSize: 18,
   };
 
   const inputStyle = {
@@ -55,7 +54,7 @@ export const Others = () => {
                 id={`others-${property}`}
                 type="text"
                 name={property}
-                value={value}
+                value={value || ""}
                 style={inputStyle}
                 onInput={handleOnInput}
               ></input>

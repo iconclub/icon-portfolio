@@ -6,8 +6,11 @@ import { ItemTypes, DefaultItemData } from "../../constants";
 import { useMainContext } from "../../contexts/MainContext";
 import { usePropertyContext } from "../../contexts/PropertyContext";
 import { Block } from "../items/Block";
+import { Divider } from "../items/Divider";
 import { Image } from "../items/Image";
 import { Input } from "../items/Input";
+import { Text } from "../items/Text";
+import { Link } from "../items/Link";
 
 const getItemComponent = (name, size, row, col, cellWidth, cellHeight, data, setData) => {
   let customStyle = {};
@@ -21,17 +24,29 @@ const getItemComponent = (name, size, row, col, cellWidth, cellHeight, data, set
   }
 
   switch (name) {
-    case ItemTypes.Input: {
-      if (!data) setData(DefaultItemData.Input);
-      return <Input size={size} customStyle={customStyle} data={data} setData={setData} />;
-    }
     case ItemTypes.Block: {
       if (!data) setData(DefaultItemData.Block);
       return <Block size={size} customStyle={customStyle} data={data} />;
     }
+    case ItemTypes.Input: {
+      if (!data) setData(DefaultItemData.Input);
+      return <Input size={size} customStyle={customStyle} data={data} setData={setData} />;
+    }
+    case ItemTypes.Text: {
+      if (!data) setData(DefaultItemData.Text);
+      return <Text size={size} customStyle={customStyle} data={data} />;
+    }
+    case ItemTypes.Link: {
+      if (!data) setData(DefaultItemData.Link);
+      return <Link size={size} customStyle={customStyle} data={data} />;
+    }
     case ItemTypes.Image: {
       if (!data) setData(DefaultItemData.Image);
       return <Image size={size} customStyle={customStyle} data={data} />;
+    }
+    case ItemTypes.Divider: {
+      if (!data) setData(DefaultItemData.Divider);
+      return <Divider size={size} customStyle={customStyle} data={data} />;
     }
     default:
       return null;

@@ -14,7 +14,6 @@ export const PCell = () => {
 
   const labelStyle = {
     marginRight: 8,
-    fontSize: 18,
   };
 
   const inputStyle = {

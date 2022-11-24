@@ -13,7 +13,7 @@ const _Cell = ({ row, col }) => {
   const style = {
     width: layout.cellWidth,
     height: layout.cellHeight,
-    border: "1px dotted #ccc",
+    border: selectedItem ? "1px dotted #ccc" : "none",
     zIndex: selectedItem ? 2 : 1,
   };
 
