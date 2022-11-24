@@ -21,7 +21,7 @@ export const DefaultItemData = {
   },
   Input: {
     text: "",
-    fontSize: 20,
+    fontSize: 24,
     fontStyle: "normal",
     fontWeight: "normal",
     color: "#000",
@@ -32,7 +32,7 @@ export const DefaultItemData = {
   },
   Text: {
     text: "This is a text",
-    fontSize: 28,
+    fontSize: 24,
     fontStyle: "normal",
     fontWeight: "normal",
     color: "#000",
@@ -41,7 +41,7 @@ export const DefaultItemData = {
   Link: {
     link: "https://www.facebook.com/iconclub.it.tdtu",
     text: "This is a link",
-    fontSize: 28,
+    fontSize: 24,
     fontStyle: "italic",
     fontWeight: "normal",
     color: "#00f",
