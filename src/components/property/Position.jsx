@@ -1,11 +1,10 @@
 import React from "react";
-import { NUMBER_OF_COLUMNS, NUMBER_OF_ROWS } from "../../constants";
 
 import { useMainContext } from "../../contexts/MainContext";
 import { usePropertyContext } from "../../contexts/PropertyContext";
 
 export const Position = () => {
-  const { showingItem, setShowingItem } = usePropertyContext();
+  const { showingItem, setShowingItem, layout } = usePropertyContext();
   const { setItems } = useMainContext();
 
   const row = showingItem?.pos[0] ?? -1;
@@ -20,6 +19,7 @@ export const Position = () => {
 
   const labelStyle = {
     marginRight: 8,
+    fontSize: 18,
   };
 
   const inputStyle = {
@@ -55,36 +55,34 @@ export const Position = () => {
   };
 
   return (
-    <>
-      {showingItem && (
-        <div style={style}>
-          <label htmlFor="position-row" style={labelStyle}>
-            Position:
-          </label>
-          <div>
-            <input
-              type="number"
-              id="position-row"
-              name="position-row"
-              min={0}
-              max={NUMBER_OF_ROWS - (showingItem?.size[0] || 0)}
-              value={row}
-              style={inputStyle}
-              onInput={handleOnRowInput}
-            />
-            <input
-              type="number"
-              id="position-col"
-              name="position-col"
-              min={0}
-              max={NUMBER_OF_COLUMNS - (showingItem?.size[1] || 0)}
-              value={col}
-              style={inputStyle}
-              onInput={handleOnColInput}
-            />
-          </div>
+    showingItem && (
+      <div style={style}>
+        <label htmlFor="position-row" style={labelStyle}>
+          Position:
+        </label>
+        <div>
+          <input
+            type="number"
+            id="position-row"
+            name="position-row"
+            min={0}
+            max={layout.numberOfRows - (showingItem?.size[0] || 0)}
+            value={row}
+            style={inputStyle}
+            onInput={handleOnRowInput}
+          />
+          <input
+            type="number"
+            id="position-col"
+            name="position-col"
+            min={0}
+            max={layout.numberOfColumns - (showingItem?.size[1] || 0)}
+            value={col}
+            style={inputStyle}
+            onInput={handleOnColInput}
+          />
         </div>
-      )}
-    </>
+      </div>
+    )
   );
 };

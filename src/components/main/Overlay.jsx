@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 
-import { CELL_WIDTH, CELL_HEIGHT } from "../../constants";
+import { usePropertyContext } from "../../contexts/PropertyContext";
 
 export const overlayTypes = {
   Allowed: "ALLOWED",
@@ -19,16 +19,15 @@ const getBackgroundType = (type) => {
 };
 
 const _Overlay = ({ type, size, row, col }) => {
-  const width = CELL_WIDTH * size[1];
-  const height = CELL_HEIGHT * size[0];
+  const { layout } = usePropertyContext();
 
   const style = {
+    width: layout.cellWidth * size[1],
+    height: layout.cellHeight * size[0],
     backgroundColor: getBackgroundType(type),
-    width,
-    height,
     position: "absolute",
-    top: row * CELL_HEIGHT,
-    left: col * CELL_WIDTH,
+    top: row * layout.cellHeight,
+    left: col * layout.cellWidth,
     zIndex: -1,
   };
 

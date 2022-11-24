@@ -1,22 +1,25 @@
 import React, { useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { NUMBER_OF_ROWS, NUMBER_OF_COLUMNS, CELL_WIDTH, CELL_HEIGHT } from "../../constants";
 import { useMainContext } from "../../contexts/MainContext";
+import { usePropertyContext } from "../../contexts/PropertyContext";
 import { Card } from "../sidebar/Card";
 import { Cell } from "./Cell";
 
 export const Main = () => {
   const { items } = useMainContext();
+  const { layout } = usePropertyContext();
 
   const style = {
-    width: "100%",
-    margin: 50,
+    width: "fit-content",
+    height: "fit-content",
+    margin: 30,
+    backgroundColor: "#fff",
   };
 
   const cellsStyle = {
-    width: NUMBER_OF_COLUMNS * CELL_WIDTH,
-    height: NUMBER_OF_ROWS * CELL_HEIGHT,
+    width: layout.numberOfColumns * layout.cellWidth,
+    height: layout.numberOfRows * layout.cellHeight,
     display: "flex",
     flexWrap: "wrap",
     margin: "0px auto",
@@ -25,8 +28,8 @@ export const Main = () => {
 
   const cells = useMemo(() => {
     const _cells = [];
-    for (let row = 0; row < NUMBER_OF_ROWS; row++) {
-      for (let col = 0; col < NUMBER_OF_COLUMNS; col++) {
+    for (let row = 0; row < layout.numberOfRows; row++) {
+      for (let col = 0; col < layout.numberOfColumns; col++) {
         const idx = `cell(${row},${col})`;
         _cells.push(<Cell key={idx} row={row} col={col} />);
       }
@@ -46,7 +49,7 @@ export const Main = () => {
       );
     }
     return _cells;
-  }, [items]);
+  }, [items, layout]);
 
   return (
     <div style={style}>

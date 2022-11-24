@@ -1,30 +1,26 @@
 import React, { memo } from "react";
 import { useDrop } from "react-dnd";
 
-import {
-  CELL_HEIGHT,
-  CELL_WIDTH,
-  NUMBER_OF_COLUMNS,
-  NUMBER_OF_ROWS,
-  ItemTypes,
-} from "../../constants";
+import { ItemTypes } from "../../constants";
 import { useMainContext } from "../../contexts/MainContext";
+import { usePropertyContext } from "../../contexts/PropertyContext";
 import { Overlay, overlayTypes } from "./Overlay";
 
 const _Cell = ({ row, col }) => {
   const { selectedItem } = useMainContext();
+  const { layout } = usePropertyContext();
 
   const style = {
-    width: CELL_WIDTH,
-    height: CELL_HEIGHT,
+    width: layout.cellWidth,
+    height: layout.cellHeight,
     border: "1px dotted #ccc",
     zIndex: selectedItem ? 2 : 1,
   };
 
   let isItemOutOfBound = false;
   if (selectedItem) {
-    const isOutOfRow = row + selectedItem.size[0] > NUMBER_OF_ROWS;
-    const isOutOfCol = col + selectedItem.size[1] > NUMBER_OF_COLUMNS;
+    const isOutOfRow = row + selectedItem.size[0] > layout.numberOfRows;
+    const isOutOfCol = col + selectedItem.size[1] > layout.numberOfColumns;
     isItemOutOfBound = isOutOfRow || isOutOfCol;
   }
 

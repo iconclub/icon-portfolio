@@ -8,7 +8,7 @@ export const App = () => {
   const style = {
     width: "100%",
     display: "flex",
-    backgroundColor: "#efefef",
+    justifyContent: "space-between",
   };
 
   return (

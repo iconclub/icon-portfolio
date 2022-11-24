@@ -14,6 +14,11 @@ export const Others = () => {
     alignItems: "center",
   };
 
+  const labelStyle = {
+    marginRight: 8,
+    fontSize: 18,
+  };
+
   const inputStyle = {
     width: 130,
     margin: "0px 4px",
@@ -42,7 +47,7 @@ export const Others = () => {
           {Object.entries(showingItem.data).map(([property, value]) => {
             return (
               <Fragment key={property}>
-                <label htmlFor={`others-${property}`}>
+                <label htmlFor={`others-${property}`} style={labelStyle}>
                   {property.charAt(0).toUpperCase() + property.slice(1)}:
                 </label>
                 <input

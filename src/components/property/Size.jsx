@@ -1,11 +1,10 @@
 import React from "react";
-import { NUMBER_OF_COLUMNS, NUMBER_OF_ROWS } from "../../constants";
 
 import { useMainContext } from "../../contexts/MainContext";
 import { usePropertyContext } from "../../contexts/PropertyContext";
 
 export const Size = () => {
-  const { showingItem, setShowingItem } = usePropertyContext();
+  const { showingItem, setShowingItem, layout } = usePropertyContext();
   const { setItems } = useMainContext();
 
   const row = showingItem?.size[0];
@@ -20,6 +19,7 @@ export const Size = () => {
 
   const labelStyle = {
     marginRight: 8,
+    fontSize: 18,
   };
 
   const inputStyle = {
@@ -55,36 +55,34 @@ export const Size = () => {
   };
 
   return (
-    <>
-      {showingItem && (
-        <div style={style}>
-          <label htmlFor="size-row" style={labelStyle}>
-            Size:
-          </label>
-          <div>
-            <input
-              type="number"
-              id="size-row"
-              min={1}
-              max={NUMBER_OF_ROWS}
-              name="size-row"
-              value={row}
-              style={inputStyle}
-              onInput={handleOnRowInput}
-            />
-            <input
-              type="number"
-              id="size-col"
-              name="size-col"
-              min={1}
-              max={NUMBER_OF_COLUMNS}
-              value={col}
-              style={inputStyle}
-              onInput={handleOnColInput}
-            />
-          </div>
+    showingItem && (
+      <div style={style}>
+        <label htmlFor="size-row" style={labelStyle}>
+          Size:
+        </label>
+        <div>
+          <input
+            type="number"
+            id="size-row"
+            min={1}
+            max={layout.numberOfRows}
+            name="size-row"
+            value={row}
+            style={inputStyle}
+            onInput={handleOnRowInput}
+          />
+          <input
+            type="number"
+            id="size-col"
+            name="size-col"
+            min={1}
+            max={layout.numberOfColumns}
+            value={col}
+            style={inputStyle}
+            onInput={handleOnColInput}
+          />
         </div>
-      )}
-    </>
+      </div>
+    )
   );
 };

@@ -1,11 +1,13 @@
 import React from "react";
 
-import { CELL_WIDTH, CELL_HEIGHT } from "../../constants";
+import { usePropertyContext } from "../../contexts/PropertyContext";
 
 export const Image = ({ size, customStyle, data }) => {
+  const { layout } = usePropertyContext();
+
   const style = {
-    width: CELL_WIDTH * size[1],
-    height: CELL_HEIGHT * size[0],
+    width: layout.cellWidth * size[1],
+    height: layout.cellHeight * size[0],
     objectFit: "cover",
   };
 
